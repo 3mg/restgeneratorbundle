@@ -18,6 +18,7 @@ use Sensio\Bundle\GeneratorBundle\Command\Helper\QuestionHelper;
 use Voryx\RESTGeneratorBundle\Generator\DoctrineRESTGenerator;
 use Sensio\Bundle\GeneratorBundle\Command\Validators;
 use Voryx\RESTGeneratorBundle\Manipulator\RoutingManipulator;
+use Symfony\Component\Process\Process;
 
 /**
  * Generates a REST api for a Doctrine entity.
