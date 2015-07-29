@@ -3,7 +3,12 @@
      * Delete a {{ entity }} entity.
      *
      * @View(statusCode=204)
-     *
+{% if isBleamable %}
+     * @ValidateUser("entity")
+{% endif %}
+{% if doc %}
+     * @ApiDoc()
+{% endif %}
      * @param Request $request
      * @param $entity
      * @internal param $id

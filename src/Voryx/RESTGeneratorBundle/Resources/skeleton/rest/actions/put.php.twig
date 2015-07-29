@@ -3,7 +3,16 @@
      * Update a {{ entity }} entity.
      *
      * @View(serializerEnableMaxDepthChecks=true)
-     *
+{% if isBleamable %}
+     * @ValidateUser("entity")
+{% endif %}
+{% if doc %}
+     * @ApiDoc(
+     *  description="Edit {{entity}}",
+     *  input="AppBundle\Form\{{entity}}Type",
+     *  output="{{ entityPath }}"
+     * )
+{% endif %}
      * @param Request $request
      * @param $entity
      *

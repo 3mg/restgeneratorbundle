@@ -3,7 +3,15 @@
      * Get a {{ entity }} entity
      *
      * @View(serializerEnableMaxDepthChecks=true)
-     *
+{% if isBleamable %}
+     * @ValidateUser("entity")
+{% endif %}
+{% if doc %}
+     * @ApiDoc(
+     *  description="get {{entity}} informations",
+     *  output="{{ entityPath }}"
+     * )
+{% endif %}
      * @return Response
 {% endblock phpdoc_method_header %}
      *

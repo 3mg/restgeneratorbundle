@@ -115,6 +115,7 @@ EOT
             });
         }
 
+        /** @var DoctrineRESTGenerator $generator */
         $generator = $this->getGenerator($bundle);
         $generator->generate($bundle, $entity, $metadata[0], $prefix, $forceOverwrite, $resource, $document);
 

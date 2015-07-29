@@ -23,6 +23,14 @@ use Symfony\Component\Form\Form;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
+{% if doc %}
+use Nelmio\ApiDocBundle\Annotation\ApiDoc;
+{% endif %}
+
+{% if isBleamable %}
+use AWCoreBundle\Annotation\ValidateUser;
+{% endif %}
+
 use Voryx\RESTGeneratorBundle\Controller\VoryxController;
 {% endblock use_statements %}
 

@@ -3,7 +3,13 @@
      * Create a {{ entity }} entity.
      *
      * @View(statusCode=201, serializerEnableMaxDepthChecks=true)
-     *
+{% if doc %}
+     * @ApiDoc(
+     *  description="Create {{entity}}",
+     *  input="AppBundle\Form\{{entity}}Type",
+     *  output="{{ entityPath }}"
+     * )
+{% endif %}
      * @param Request $request
      *
      * @return Response

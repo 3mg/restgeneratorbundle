@@ -3,7 +3,9 @@
      * Get all {{ entity }} entities.
      *
      * @View(serializerEnableMaxDepthChecks=true)
-     *
+{% if doc %}
+     * @ApiDoc()
+{% endif %}
      * @param ParamFetcherInterface $paramFetcher
      *
      * @return Response
