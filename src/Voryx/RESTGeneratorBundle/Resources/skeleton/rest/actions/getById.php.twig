@@ -3,7 +3,28 @@
      * Get a {{ entity }} entity
      *
      * @View(serializerEnableMaxDepthChecks=true)
+{% if isBleamable %}
+     * @ValidateUser("entity")
+{% endif %}
+{% if doc %}
+     * @ApiDoc(
+     *  description="get {{entity}} informations",
+     *  output="{{ entityPath }}",
+     *  statusCodes={
+     *      200="Returned when successful",
+     *      403="Returned when the user is not authorized",
+     *      404={
+     *        "Returned when something is not found"
+     *      }
+     *   }
+{% if isBleamable %}
+     *   ,tags={
+     *       "secured" = "#FFCC33"
+     *   }
+{% endif %}
+     * )
      *
+{% endif %}
      * @return Response
 {% endblock phpdoc_method_header %}
      *

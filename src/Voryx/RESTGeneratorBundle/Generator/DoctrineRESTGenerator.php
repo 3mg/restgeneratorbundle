@@ -11,6 +11,8 @@
 
 namespace Voryx\RESTGeneratorBundle\Generator;
 
+use AWCoreBundle\Entity\IBlameable;
+use FOS\UserBundle\Model\UserInterface;
 use Sensio\Bundle\GeneratorBundle\Generator\Generator;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpKernel\Bundle\BundleInterface;
@@ -26,11 +28,16 @@ class DoctrineRESTGenerator extends Generator
     protected $filesystem;
     protected $routePrefix;
     protected $routeNamePrefix;
+
+    /**
+     * @var BundleInterface
+     */
     protected $bundle;
     protected $entity;
     protected $metadata;
     protected $format;
     protected $actions;
+    protected $doc = false;
 
     /**
      * Constructor.
@@ -53,7 +60,7 @@ class DoctrineRESTGenerator extends Generator
      *
      * @throws \RuntimeException
      */
-    public function generate(BundleInterface $bundle, $entity, ClassMetadataInfo $metadata, $routePrefix, $forceOverwrite)
+    public function generate(BundleInterface $bundle, $entity, ClassMetadataInfo $metadata, $routePrefix, $forceOverwrite, $resource, $document)
     {
         $this->routePrefix     = $routePrefix;
         $this->routeNamePrefix = str_replace('/', '_', $routePrefix);
@@ -70,6 +77,8 @@ class DoctrineRESTGenerator extends Generator
         $this->entity   = $entity;
         $this->bundle   = $bundle;
         $this->metadata = $metadata;
+        $this->metadata = $metadata;
+        $this->doc      = (bool)$document;
         $this->setFormat('yml');
 
         $this->generateControllerClass($forceOverwrite);
@@ -137,6 +146,8 @@ class DoctrineRESTGenerator extends Generator
         $parts           = explode('\\', $this->entity);
         $entityClass     = array_pop($parts);
         $entityNamespace = implode('\\', $parts);
+        $entityPath      = $this->bundle->getNamespace().'\\Entity\\'.$this->entity;
+        $entityObject    = new $entityPath();
 
         $target = sprintf(
             '%s/Controller/%s/%sRESTController.php',
@@ -162,6 +173,10 @@ class DoctrineRESTGenerator extends Generator
                 'namespace'         => $this->bundle->getNamespace(),
                 'entity_namespace'  => $entityNamespace,
                 'format'            => $this->format,
+                'doc'               => $this->doc,
+                'entityObject'      => $entityObject,
+                'entityPath'        => $entityPath,
+                'isBleamable'       => ($entityObject instanceof IBlameable or $entityObject instanceof UserInterface)
             )
         );
     }

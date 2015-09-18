@@ -18,6 +18,7 @@ use Sensio\Bundle\GeneratorBundle\Command\Helper\QuestionHelper;
 use Voryx\RESTGeneratorBundle\Generator\DoctrineRESTGenerator;
 use Sensio\Bundle\GeneratorBundle\Command\Validators;
 use Voryx\RESTGeneratorBundle\Manipulator\RoutingManipulator;
+use Symfony\Component\Process\Process;
 
 /**
  * Generates a REST api for a Doctrine entity.
@@ -42,6 +43,7 @@ class GenerateDoctrineRESTCommand extends GenerateDoctrineCrudCommand
                 new InputOption('overwrite', '', InputOption::VALUE_NONE, 'Do not stop the generation if rest api controller already exist, thus overwriting all generated files'),
                 new InputOption('resource', '', InputOption::VALUE_NONE, 'The object will return with the resource name'),
                 new InputOption('document', '', InputOption::VALUE_NONE, 'Use NelmioApiDocBundle to document the controller'),
+                new InputOption('form', '', InputOption::VALUE_NONE, 'Generate form with sf2 generator'),
             )
         )
             ->setDescription('Generates a REST api based on a Doctrine entity')
@@ -99,7 +101,21 @@ EOT
         $bundle      = $this->getContainer()->get('kernel')->getBundle($bundle);
         $resource    = $input->getOption('resource');
         $document    = $input->getOption('document');
+        $form        = $input->getOption('form');
 
+        if ($form) {
+            $entityName = $input->getOption('entity');
+            $process = new Process("app/console doctrine:generate:form $entityName");
+            $process->run(function ($type, $buffer) {
+                if ('err' === $type) {
+                    echo 'ERR > '.$buffer;
+                } else {
+                    echo 'OUT > '.$buffer;
+                }
+            });
+        }
+
+        /** @var DoctrineRESTGenerator $generator */
         $generator = $this->getGenerator($bundle);
         $generator->generate($bundle, $entity, $metadata[0], $prefix, $forceOverwrite, $resource, $document);
 

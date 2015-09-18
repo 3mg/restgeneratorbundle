@@ -3,7 +3,26 @@
      * Create a {{ entity }} entity.
      *
      * @View(statusCode=201, serializerEnableMaxDepthChecks=true)
+{% if doc %}
+     * @ApiDoc(
+     *  description="Create {{entity}}",
+     *  input="AppBundle\Form\{{entity}}Type",
+     *  output="{{ entityPath }}",
+     *  statusCodes={
+     *      200="Returned when successful",
+     *      403="Returned when the user is not authorized",
+     *      404={
+     *        "Returned when something is not found"
+     *      }
+     *   }
+{% if isBleamable %}
+     *   ,tags={
+     *       "secured" = "#FFCC33"
+     *   }
+{% endif %}
+     * )
      *
+{% endif %}
      * @param Request $request
      *
      * @return Response
